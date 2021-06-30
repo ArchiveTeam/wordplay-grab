@@ -379,7 +379,7 @@ wget.callbacks.httploop_result = function(url, err, http_stat)
   end
   
   local do_retry = false
-  local maxtries = 12
+  local maxtries = 3
   local url_is_essential = true
 
   -- Whitelist instead of blacklist status codes
