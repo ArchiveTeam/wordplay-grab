@@ -57,11 +57,10 @@ if not WGET_AT:
 # Update this each time you make a non-cosmetic change.
 # It will be added to the WARC files and reported to the tracker.
 VERSION = '20210524.01'
-USER_AGENT = 'Archiveteam (https://wiki.archiveteam.org/; communicate at https://webirc.hackint.org/#ircs://irc.hackint.org/#tinkerhad)'
-#USER_AGENT = 'Do not use this in production'
-TRACKER_ID = 'wikidot'
+USER_AGENT = 'Archiveteam (https://wiki.archiveteam.org/; communicate at https://webirc.hackint.org/#ircs://irc.hackint.org/#archiveteam)'
+TRACKER_ID = 'wordplay'
 TRACKER_HOST = 'legacy-api.arpa.li'
-MULTI_ITEM_SIZE = 1
+MULTI_ITEM_SIZE = 20
 
 
 ###########################################################################
@@ -173,7 +172,7 @@ class MaybeSendDoneToTracker(SendDoneToTracker):
 
 CWD = os.getcwd()
 PIPELINE_SHA1 = get_hash(os.path.join(CWD, 'pipeline.py'))
-LUA_SHA1 = get_hash(os.path.join(CWD, 'wikidot.lua'))
+LUA_SHA1 = get_hash(os.path.join(CWD, 'wordplay.lua'))
 
 def stats_id_function(item):
     d = {
@@ -193,7 +192,7 @@ class WgetArgs(object):
             '-nv',
             '--content-on-error',
             '--load-cookies', 'cookies.txt',
-            '--lua-script', 'wikidot.lua',
+            '--lua-script', 'wordplay.lua',
             '-o', ItemInterpolation('%(item_dir)s/wget.log'),
             '--no-check-certificate',
             '--output-document', ItemInterpolation('%(item_dir)s/wget.tmp'),
@@ -230,14 +229,14 @@ class WgetArgs(object):
             wget_args.extend(['--warc-header', 'x-wget-at-project-item-name: '+item_name])
             wget_args.append('item-name://' + item_name)
             item_type, item_value = item_name.split(':', 1)
-            if item_type == 'wiki':
-                wget_args.extend(['--warc-header', 'wikidot-wiki: ' + item_value])
-                wget_args.append(f'http://{item_value}/')
-                set_start_url(item_type, item_value, f'http://{item_value}/')
-            elif item_type == 'user':
-                wget_args.extend(['--warc-header', 'wikidot-user: ' + item_value])
-                wget_args.append(f'http://www.wikidot.com/user:info/{item_value}')
-                set_start_url(item_type, item_value, f'http://www.wikidot.com/user:info/{item_value}')
+            if item_type == 'lesson':
+                wget_args.extend(['--warc-header', 'wordplay-lesson: ' + item_value])
+                wget_args.append(f'https://wordplay.com/lesson/{item_value}')
+                set_start_url(item_type, item_value, f'https://wordplay.com/lesson/{item_value}')
+            elif item_type == 'course':
+                wget_args.extend(['--warc-header', 'wordplay-course: ' + item_value])
+                wget_args.append(f'https://wordplay.com/course/{item_value}')
+                set_start_url(item_type, item_value, f'https://wordplay.com/course/{item_value}')
             else:
                 raise ValueError('item_type not supported.')
 
@@ -262,10 +261,10 @@ class WgetArgs(object):
 # This will be shown in the warrior management panel. The logo should not
 # be too big. The deadline is optional.
 project = Project(
-    title = 'wikidot',
+    title = 'wordplay',
     project_html = '''
     <img class="project-logo" alt="logo" src="https://wiki.archiveteam.org/images/6/66/Tinkercad_icon.png" height="50px"/>
-    <h2>Wikidot <span class="links"><a href="https://www.wikidot.com/">Website</a> &middot; <a href="http://tracker.archiveteam.org/wikidot/">Leaderboard</a></span></h2>
+    <h2>Wordplay <span class="links"><a href="https://wordplay.com/">Website</a> &middot; <a href="http://tracker.archiveteam.org/wordplay/">Leaderboard</a></span></h2>
     ''',)
 
 pipeline = Pipeline(
@@ -273,7 +272,7 @@ pipeline = Pipeline(
     GetItemFromTracker('http://{}/{}/multi={}/'
         .format(TRACKER_HOST, TRACKER_ID, MULTI_ITEM_SIZE),
         downloader, VERSION),
-    PrepareDirectories(warc_prefix='wikidot'),
+    PrepareDirectories(warc_prefix='wordplay'),
     WgetDownload(
         WgetArgs(),
         max_tries=1,
