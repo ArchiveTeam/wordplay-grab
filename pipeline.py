@@ -242,7 +242,6 @@ class WgetArgs(object):
 
             item['item_name'] = '\0'.join(item_names_to_submit)
             
-            # Feels like about half of writing a grab script is fighting Seesaw and Lua rather than working on the site
             item['start_urls'] = json.dumps(start_urls)
             item['item_names_table'] = json.dumps(item_names_table)
 
@@ -263,9 +262,10 @@ class WgetArgs(object):
 project = Project(
     title = 'wordplay',
     project_html = '''
-    <img class="project-logo" alt="logo" src="https://wiki.archiveteam.org/images/6/66/Tinkercad_icon.png" height="50px"/>
+    <img class="project-logo" alt="logo" src="https://wiki.archiveteam.org/images/3/3c/Wordplay_logo_bg.png" height="50px"/>
     <h2>Wordplay <span class="links"><a href="https://wordplay.com/">Website</a> &middot; <a href="http://tracker.archiveteam.org/wordplay/">Leaderboard</a></span></h2>
-    ''',)
+    ''',
+    utc_deadline = datetime.date.fromtimestamp(1625112000))
 
 pipeline = Pipeline(
     CheckIP(),
