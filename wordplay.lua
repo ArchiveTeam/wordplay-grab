@@ -6,7 +6,6 @@ local luasocket = require("socket") -- Used to get sub-second time
 local http = require("socket.http")
 JSON = assert(loadfile "JSON.lua")()
 
-local item_name_newline = os.getenv("item_name_newline")
 local start_urls = JSON:decode(os.getenv("start_urls"))
 local items_table = JSON:decode(os.getenv("item_names_table"))
 local item_dir = os.getenv("item_dir")
@@ -326,9 +325,8 @@ wget.callbacks.get_urls = function(file, url, is_css, iri)
   
 
   if status_code == 200 and not (string.match(url, "%.jpe?g$") or string.match(url, "%.png$"))
-    and not string.match(url, "^https?://[^/]%.cloudfront%.net/") then
+    and not string.match(url, "^https?://[^/]+%.cloudfront%.net/") then
     load_html()
-    
     -- These two were extracting a lot of junk
     --[[for newurl in string.gmatch(string.gsub(html, "&quot;", '"'), '([^"]+)') do
       checknewurl(newurl)
@@ -464,7 +462,7 @@ end
 
 
 wget.callbacks.finish = function(start_time, end_time, wall_time, numurls, total_downloaded_bytes, total_download_time)
-  queue_list_to(discovered_items, "fill_me_in")
+  queue_list_to(discovered_items, "wordplay-ybaopafqozjz30q")
 end
 
 wget.callbacks.write_to_warc = function(url, http_stat)

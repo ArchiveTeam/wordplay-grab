@@ -56,7 +56,7 @@ if not WGET_AT:
 #
 # Update this each time you make a non-cosmetic change.
 # It will be added to the WARC files and reported to the tracker.
-VERSION = '20210524.01'
+VERSION = '20210630.01'
 USER_AGENT = 'Archiveteam (https://wiki.archiveteam.org/; communicate at https://webirc.hackint.org/#ircs://irc.hackint.org/#archiveteam)'
 TRACKER_ID = 'wordplay'
 TRACKER_HOST = 'legacy-api.arpa.li'
@@ -215,7 +215,6 @@ class WgetArgs(object):
         ]
         
         item_names = item['item_name'].split('\0')
-        item['item_name_newline'] = item['item_name'].replace('\0', '\n') # TODO is it safe to remove this?
         start_urls = []
         item_names_table = []
         
@@ -280,7 +279,6 @@ pipeline = Pipeline(
         env={
             'item_dir': ItemValue('item_dir'),
             'warc_file_base': ItemValue('warc_file_base'),
-            'item_name_newline': ItemValue('item_name_newline'),
             'start_urls': ItemValue('start_urls'),
             'item_names_table': ItemValue('item_names_table')
         }
