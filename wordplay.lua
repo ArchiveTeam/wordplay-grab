@@ -384,6 +384,7 @@ wget.callbacks.httploop_result = function(url, err, http_stat)
 
   -- Whitelist instead of blacklist status codes
   local is_valid_400 = string.match(url["url"], "^https://api3%.wordplay%.com/lessons/")
+    or string.match(url["url"], "^https://api3%.wordplay%.com/courses/")
   local is_valid_403 = string.match(url["url"], "^https?://d1ezai0lfl2usn%.cloudfront%.net/")
     or string.match(url["url"], "^https?://d33ata18hf0t57%.cloudfront%.net/")
   if status_code ~= 200
