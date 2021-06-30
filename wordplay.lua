@@ -307,6 +307,23 @@ wget.callbacks.get_urls = function(file, url, is_css, iri)
   end
   
   
+  local course = string.match(url, "^https://wordplay%.com/course/(.+)$")
+  if course then
+    assert(course == current_item_value)
+    check("https://api3.wordplay.com/courses/" .. course)
+  end
+  
+  local course = string.match(url, "^https://api3%.wordplay%.com/courses/(.+)$")
+  if course and status_code == 200 then
+    assert(course == current_item_value)
+    load_html()
+    local json = JSON:decode(html)["response"]
+    for _, v in pairs(json["lessons"]) do
+      discover_item("lesson", v["lessonID"])
+    end
+  end
+  
+  
 
   if status_code == 200 and not (string.match(url, "%.jpe?g$") or string.match(url, "%.png$"))
     and not string.match(url, "^https?://[^/]%.cloudfront%.net/") then
