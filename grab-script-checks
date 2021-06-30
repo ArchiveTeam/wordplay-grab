@@ -1,0 +1,17 @@
+format 0
+
+[[]]
+not regex .*view-source:.*
+#not regex .{300,} # Huge URLs, incl. big JS libraries
+
+[[user:the-cow]]
+some exact http://www.wikidot.com/user:info/the-cow
+some exact http://www.wikidot.com/userkarma.php?u=1356851&onlyKarma=true
+some exact http://d2qhngyckgiutd.cloudfront.net/0f57cbff020ee66ead29eb2897a755ff
+some exact http://www.wikidot.com/ajax-module-connector.php
+some exact http://tibasicdev.wikidot.com/ajax-module-connector.php
+some exact http://z80-heaven.wikidot.com/ajax-module-connector.php
+some queued wiki:tibasicdev.wikidot.com
+some queued wiki:z80-heaven.wikidot.com
+
+# TODO the other type
